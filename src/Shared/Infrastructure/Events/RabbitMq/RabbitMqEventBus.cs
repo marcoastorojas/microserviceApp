@@ -18,7 +18,10 @@ public class RabbitMqEventBus : EventBus
 
     public async Task Publish(List<DomainEvent> domainEvents)
     {
-        domainEvents.ForEach((e) => Publish(e));
+        foreach (var domainEvent in domainEvents)
+        {
+            await Publish(domainEvent);
+        }
     }
 
     public async Task Publish(DomainEvent domainEvent){
@@ -42,25 +45,34 @@ public class RabbitMqEventBus : EventBus
     
     public static string Serialize(DomainEvent domainEvent)
     {
-        if (domainEvent == null) return "";
-
-        var attributes = domainEvent.ToPrimitives();
-
-        attributes.Add("id", domainEvent.AggregateId);
-
-        return JsonSerializer.Serialize(new Dictionary<string, Dictionary<string, object>>
+        try
         {
+            if (domainEvent == null) return "";
+
+            var attributes = domainEvent.ToPrimitives();
+
+            attributes.Add("id", domainEvent.AggregateId);
+
+            return JsonSerializer.Serialize(new Dictionary<string, Dictionary<string, object>>
             {
-                "data", new Dictionary<string, object>
                 {
-                    {"id", domainEvent.EventId},
-                    {"type", domainEvent.EventName()},
-                    {"occurred_on", domainEvent.OccurredOn},
-                    {"attributes", attributes}
-                }
-            },
-            {"meta", new Dictionary<string, object>()}
-        });
+                    "data", new Dictionary<string, object>
+                    {
+                        {"id", domainEvent.EventId},
+                        {"type", domainEvent.EventName()},
+                        {"occurred_on", domainEvent.OccurredOn},
+                        {"attributes", attributes}
+                    }
+                },
+                {"meta", new Dictionary<string, object>()}
+            });
+        }
+        catch (System.Exception ex)
+        {
+            
+            throw;
+        }
+        
     }
 
 

@@ -8,7 +8,8 @@ public abstract class DomainEvent
     public DateTime OccurredOn;
 
     public DomainEvent(){
-
+        EventId = "";
+        AggregateId = "";
     }
     
     public DomainEvent(string aggregateId){
@@ -17,8 +18,13 @@ public abstract class DomainEvent
         AggregateId = aggregateId;
     }
 
+    public DomainEvent(string aggregateId, string eventId, DateTime ocurredOn){
+        EventId = eventId;
+        OccurredOn = ocurredOn;
+        AggregateId = aggregateId;
+    }
+
     public abstract string EventName();
     public abstract Dictionary<string, string> ToPrimitives();
-    public abstract DomainEvent FromPrimitives(string aggregateId, Dictionary<string, string> body, string eventId,
-            string occurredOn);
+    public abstract DomainEvent FromPrimitives(string aggregateId, Dictionary<string, string> body, string eventId, string occurredOn);
 }

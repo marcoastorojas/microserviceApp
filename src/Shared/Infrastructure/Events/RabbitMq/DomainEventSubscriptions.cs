@@ -21,7 +21,7 @@ public class TDomainEventSubscription(Type evento)
     public string EventName()
     {
         return string.Concat( evento.Name.Select((x, i) =>
-                i > 0 && char.IsUpper(x) ? "_" + x : x.ToString(CultureInfo.InvariantCulture)))
+                i > 0 && char.IsUpper(x) ? "." + x : x.ToString(CultureInfo.InvariantCulture)))
             .ToLowerInvariant();
     }
 }

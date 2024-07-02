@@ -7,24 +7,31 @@ using Shared.Domain.Events;
 namespace Shared.Infrastrucure.Events.RabbitMq;
 
 
-public class RabbitMqConsumer(DomainEventSubscriptions domainEventSubscriptions, IServiceProvider serviceProvider, RabbitMqConnection connection)
+public class RabbitMqConsumer
 {
     // DomainEventSubscriptions ->  <DomainEventSubscriber, DomainEventSubscription> 
     // que se obtienen de la lectura de la solucion a travez de un comando al iniciar;
-    private readonly DomainEventSubscriptions domainEventSubscriptions = domainEventSubscriptions;
+    private readonly DomainEventSubscriptions domainEventSubscriptions;
     
     // RabbitMqConnection ->  conexion del cliente Rabbit que da acceso a un Canal ya abierto;
-    private RabbitMqConnection rabbitMqConnection = connection;
+    private readonly RabbitMqConnection rabbitMqConnection;
 
     // IServiceProvider -> que nos da la relacion de clases declaradas en la solucion;
-    private IServiceProvider serviceProvider = serviceProvider;
+    private readonly IServiceProvider serviceProvider;
 
     // DomainEventSubscribers servira para tener un registro de las instancias generadas 
     // y no volverlas  a crear 
     private readonly Dictionary<string, object> domainEventSubscribers = [];
 
+    public RabbitMqConsumer(DomainEventSubscriptions domainEventSubscriptions, RabbitMqConnection rabbitMqConnection, IServiceProvider serviceProvider)
+    {
+        this.domainEventSubscriptions = domainEventSubscriptions;
+        this.rabbitMqConnection = rabbitMqConnection;
+        this.serviceProvider = serviceProvider;
 
-    public async Task Consume(){
+    }
+
+    public void Consume(){
         //Se consume las subscripciones que se generaron con el mapeo de los domainSubcscriber y sus eventos asociados
         foreach (var domainEventSubscription in domainEventSubscriptions.Subscriptions)
         {
@@ -39,6 +46,9 @@ public class RabbitMqConsumer(DomainEventSubscriptions domainEventSubscriptions,
             
             // Ahora se debe Subscribir el evento a la instancia usando rabbit
             var _channel = rabbitMqConnection.Channel();
+            _channel.QueueDeclare(subscriber.QueueName(),false,true,true,new Dictionary<string,object>());
+            _channel.QueueBind(subscriber.QueueName(), "domain_events", subscription.EventName(),new Dictionary<string, object>());
+
             var consumer = new EventingBasicConsumer(_channel);
             consumer.Received += async (model, ea) =>
             {
@@ -47,9 +57,20 @@ public class RabbitMqConsumer(DomainEventSubscriptions domainEventSubscriptions,
                 // en este punto se debe ejecutar el metodo handle de la instancia
                 var domainEvent = Deserialize(message,subscription.evento);
 
-                await ((DomainEventSubscriberBase) subscriber).Handle(domainEvent);
+                await ((DomainEventSubscriberBase) instanciaSubscriber).Handle(domainEvent);
+                
+                _channel.BasicAck(ea.DeliveryTag, false);
             };
 
+            var consumerId = _channel.BasicConsume(
+                subscriber.QueueName(), 
+                false, 
+                "",
+                false,
+                false,
+                new Dictionary<string,object>(),
+                consumer
+            );
         }
     }
 
@@ -76,7 +97,7 @@ public class RabbitMqConsumer(DomainEventSubscriptions domainEventSubscriptions,
                 attributes["id"] ?? "",
                 attributes,
                 data["id"].ToString() ?? "",
-                data["ocurred on"].ToString() ?? ""
+                data["occurred_on"].ToString() ?? ""
             );
             return domainEvent;
         }

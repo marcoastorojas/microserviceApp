@@ -1,0 +1,42 @@
+# Archivos y carpetas específicos de .NET
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.dll
+*.exe
+*.pdb
+
+# Archivos de Visual Studio
+.vs/
+*.vspscc
+*.vssscc
+
+# Archivos de configuración local
+appsettings.Development.json
+appsettings.Production.json
+
+# Paquetes NuGet
+packages/
+
+# Archivos temporales
+[Tt]emp/
+[Tt]mp/
+
+# Logs
+*.log
+
+# Archivos de publicación
+PublishProfiles/
+*.pubxml
+
+# Archivos de respaldo
+*.[Bb]ak
+
+# Otros archivos y carpetas que generalmente no se deben incluir
+node_modules/
+.vscode/
+*.swp
+*.*~
+project.lock.json

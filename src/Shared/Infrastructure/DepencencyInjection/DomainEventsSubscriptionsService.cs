@@ -16,11 +16,12 @@ public static class  DomainEventsSubscriptionsService
         foreach (var type in classTypes)
         {
             var interfaces = type.ImplementedInterfaces.Select(i => i.GetTypeInfo());
+            var interfaces2 = interfaces.Where(i =>
+                i.IsGenericType && i.GetGenericTypeDefinition() == typeof(DomainEventSubscriber<>));
 
-            foreach (var handlerInterfaceType in interfaces.Where(i =>
-                i.IsGenericType && i.GetGenericTypeDefinition() == typeof(DomainEventSubscriber<>)))
+            foreach (var handlerInterfaceType in interfaces2)
             {
-                services.AddScoped(handlerInterfaceType.AsType(), type.AsType());
+                services.AddScoped(type);
                 FormatSubscribers(assembly, handlerInterfaceType, domainEventsSubscriptions);
             }
         }

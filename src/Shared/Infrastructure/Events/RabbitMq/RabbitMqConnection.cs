@@ -23,12 +23,17 @@ public class RabbitMqConnection
         
     }
 
-    public IModel Channel(){
-        if(Channel == null){
-            _connection ??= ConnectionFactory.CreateConnection();
-            _channel = _connection.CreateModel();
-        }
-        return _channel!;
+    public IConnection Connection()
+    {
+        if (_connection == null) _connection = ConnectionFactory.CreateConnection();
+        return _connection;
+    }
+
+
+    public IModel Channel()
+    {
+        if (_channel == null) _channel = Connection().CreateModel();
+        return _channel;
     }
 }
 
