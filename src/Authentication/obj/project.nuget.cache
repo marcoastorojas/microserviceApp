@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "GH5CweT979dnWIZQ+ToNSEDqW7m9uJJH56wK4BFlW7TUunEwIa5dhy5kS0rQ6SEkXmyq3D46+yQjj8T7W4aSAQ==",
+  "success": true,
+  "projectFilePath": "/home/marco/projects/dotnetApps/microserviceApp/src/Authentication/Authentication.csproj",
+  "expectedPackageFiles": [
+    "/home/marco/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/8.0.0/microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
+    "/home/marco/.nuget/packages/microsoft.extensions.options/8.0.2/microsoft.extensions.options.8.0.2.nupkg.sha512",
+    "/home/marco/.nuget/packages/microsoft.extensions.primitives/8.0.0/microsoft.extensions.primitives.8.0.0.nupkg.sha512",
+    "/home/marco/.nuget/packages/newtonsoft.json/13.0.3/newtonsoft.json.13.0.3.nupkg.sha512",
+    "/home/marco/.nuget/packages/rabbitmq.client/6.8.1/rabbitmq.client.6.8.1.nupkg.sha512",
+    "/home/marco/.nuget/packages/system.memory/4.5.5/system.memory.4.5.5.nupkg.sha512",
+    "/home/marco/.nuget/packages/system.threading.channels/7.0.0/system.threading.channels.7.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
