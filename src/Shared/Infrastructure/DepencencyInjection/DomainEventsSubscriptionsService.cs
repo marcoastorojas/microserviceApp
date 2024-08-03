@@ -2,9 +2,9 @@
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Domain.Events;
-using Shared.Infrastrucure.Events.RabbitMq;
+using Shared.Infrastructure.Events.RabbitMq;
 
-namespace Shared.Infrastrucure.DependencyInjection;
+namespace Shared.Infrastructure.DependencyInjection;
 public static class  DomainEventsSubscriptionsService
 {
     public static IServiceCollection AddDomainEventsSubscriptions(this IServiceCollection services, Assembly assembly)
@@ -54,7 +54,7 @@ public static class  DomainEventsSubscriptionsService
         }
         catch (ReflectionTypeLoadException e)
         {
-            return e.Types.Where(t => t != null);
+            return e.Types.Where(t => t != null)!;
         }
     }
 }

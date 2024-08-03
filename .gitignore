@@ -15,11 +15,13 @@ obj/
 
 # Archivos de configuración local
 appsettings.Development.json
+appsettings.json
+
 appsettings.Production.json
 
 # Paquetes NuGet
 packages/
-
+out/
 # Archivos temporales
 [Tt]emp/
 [Tt]mp/

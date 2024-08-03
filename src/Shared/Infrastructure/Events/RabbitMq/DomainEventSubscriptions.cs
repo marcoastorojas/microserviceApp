@@ -1,7 +1,7 @@
 
 using System.Globalization;
 
-namespace Shared.Infrastrucure.Events.RabbitMq;
+namespace Shared.Infrastructure.Events.RabbitMq;
 
 
 public class DomainEventSubscriptions
@@ -30,10 +30,16 @@ public class TDomainEventSubscriber(Type subscriber)
 {
     readonly public Type subscriber  = subscriber;
 
-    public string QueueName()
-    {
-        return string.Concat( subscriber.Name.Select((x, i) =>
+    public string QueueName(string prefix = "")
+    {   
+        return  prefix != "" ? prefix + "_": "" + string.Concat( subscriber.Name.Select((x, i) =>
                 i > 0 && char.IsUpper(x) ? "_" + x : x.ToString(CultureInfo.InvariantCulture)))
+            .ToLowerInvariant();
+    }
+    public string QueueEventName(string prefix = "")
+    {
+        return prefix != "" ? prefix + ".": "" + string.Concat( subscriber.Name.Select((x, i) =>
+                i > 0 && char.IsUpper(x) ? "." + x : x.ToString(CultureInfo.InvariantCulture)))
             .ToLowerInvariant();
     }
 }

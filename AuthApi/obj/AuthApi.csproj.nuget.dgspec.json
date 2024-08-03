@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/marco/projects/dotnetApps/microserviceApp/AuthApi/AuthApi.csproj": {}
+    "/home/marco/projects/dotnetApps/microservicios/microserviceApp/AuthApi/AuthApi.csproj": {}
   },
   "projects": {
-    "/home/marco/projects/dotnetApps/microserviceApp/AuthApi/AuthApi.csproj": {
+    "/home/marco/projects/dotnetApps/microservicios/microserviceApp/AuthApi/AuthApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/marco/projects/dotnetApps/microserviceApp/AuthApi/AuthApi.csproj",
+        "projectUniqueName": "/home/marco/projects/dotnetApps/microservicios/microserviceApp/AuthApi/AuthApi.csproj",
         "projectName": "AuthApi",
-        "projectPath": "/home/marco/projects/dotnetApps/microserviceApp/AuthApi/AuthApi.csproj",
+        "projectPath": "/home/marco/projects/dotnetApps/microservicios/microserviceApp/AuthApi/AuthApi.csproj",
         "packagesPath": "/home/marco/.nuget/packages/",
-        "outputPath": "/home/marco/projects/dotnetApps/microserviceApp/AuthApi/obj/",
+        "outputPath": "/home/marco/projects/dotnetApps/microservicios/microserviceApp/AuthApi/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/marco/.nuget/NuGet/NuGet.Config"
@@ -26,11 +26,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/home/marco/projects/dotnetApps/microserviceApp/src/Authentication/Authentication.csproj": {
-                "projectPath": "/home/marco/projects/dotnetApps/microserviceApp/src/Authentication/Authentication.csproj"
+              "/home/marco/projects/dotnetApps/microservicios/microserviceApp/src/Authentication/Authentication.csproj": {
+                "projectPath": "/home/marco/projects/dotnetApps/microservicios/microserviceApp/src/Authentication/Authentication.csproj"
               },
-              "/home/marco/projects/dotnetApps/microserviceApp/src/Shared/Shared.csproj": {
-                "projectPath": "/home/marco/projects/dotnetApps/microserviceApp/src/Shared/Shared.csproj"
+              "/home/marco/projects/dotnetApps/microservicios/microserviceApp/src/Shared/Shared.csproj": {
+                "projectPath": "/home/marco/projects/dotnetApps/microservicios/microserviceApp/src/Shared/Shared.csproj"
               }
             }
           }
@@ -63,18 +63,18 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.105/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.107/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "/home/marco/projects/dotnetApps/microserviceApp/src/Authentication/Authentication.csproj": {
+    "/home/marco/projects/dotnetApps/microservicios/microserviceApp/src/Authentication/Authentication.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/marco/projects/dotnetApps/microserviceApp/src/Authentication/Authentication.csproj",
+        "projectUniqueName": "/home/marco/projects/dotnetApps/microservicios/microserviceApp/src/Authentication/Authentication.csproj",
         "projectName": "Authentication",
-        "projectPath": "/home/marco/projects/dotnetApps/microserviceApp/src/Authentication/Authentication.csproj",
+        "projectPath": "/home/marco/projects/dotnetApps/microservicios/microserviceApp/src/Authentication/Authentication.csproj",
         "packagesPath": "/home/marco/.nuget/packages/",
-        "outputPath": "/home/marco/projects/dotnetApps/microserviceApp/src/Authentication/obj/",
+        "outputPath": "/home/marco/projects/dotnetApps/microservicios/microserviceApp/src/Authentication/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/marco/.nuget/NuGet/NuGet.Config"
@@ -89,8 +89,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/home/marco/projects/dotnetApps/microserviceApp/src/Shared/Shared.csproj": {
-                "projectPath": "/home/marco/projects/dotnetApps/microserviceApp/src/Shared/Shared.csproj"
+              "/home/marco/projects/dotnetApps/microservicios/microserviceApp/src/Shared/Shared.csproj": {
+                "projectPath": "/home/marco/projects/dotnetApps/microservicios/microserviceApp/src/Shared/Shared.csproj"
               }
             }
           }
@@ -120,18 +120,18 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.105/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.107/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "/home/marco/projects/dotnetApps/microserviceApp/src/Shared/Shared.csproj": {
+    "/home/marco/projects/dotnetApps/microservicios/microserviceApp/src/Shared/Shared.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/marco/projects/dotnetApps/microserviceApp/src/Shared/Shared.csproj",
+        "projectUniqueName": "/home/marco/projects/dotnetApps/microservicios/microserviceApp/src/Shared/Shared.csproj",
         "projectName": "Shared",
-        "projectPath": "/home/marco/projects/dotnetApps/microserviceApp/src/Shared/Shared.csproj",
+        "projectPath": "/home/marco/projects/dotnetApps/microservicios/microserviceApp/src/Shared/Shared.csproj",
         "packagesPath": "/home/marco/.nuget/packages/",
-        "outputPath": "/home/marco/projects/dotnetApps/microserviceApp/src/Shared/obj/",
+        "outputPath": "/home/marco/projects/dotnetApps/microservicios/microserviceApp/src/Shared/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/marco/.nuget/NuGet/NuGet.Config"
@@ -158,6 +158,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Dapper": {
+              "target": "Package",
+              "version": "[2.1.35, )"
+            },
             "Microsoft.Extensions.Options": {
               "target": "Package",
               "version": "[8.0.2, )"
@@ -165,6 +169,10 @@
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.3, )"
+            },
+            "Npgsql": {
+              "target": "Package",
+              "version": "[8.0.3, )"
             },
             "RabbitMQ.Client": {
               "target": "Package",
@@ -187,7 +195,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.105/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.107/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

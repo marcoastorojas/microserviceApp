@@ -1,10 +1,12 @@
 using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Shared.Domain.Events;
+using Shared.Infrastructure.Events.RabbitMq;
 
-namespace Shared.Infrastrucure.Events.RabbitMq;
+namespace Shared.Infrastructure.Events.RabbitMq;
 
 
 public class RabbitMqConsumer
@@ -22,6 +24,8 @@ public class RabbitMqConsumer
     // DomainEventSubscribers servira para tener un registro de las instancias generadas 
     // y no volverlas  a crear 
     private readonly Dictionary<string, object> domainEventSubscribers = [];
+
+    private const int MaxRetries = 2;
 
     public RabbitMqConsumer(DomainEventSubscriptions domainEventSubscriptions, RabbitMqConnection rabbitMqConnection, IServiceProvider serviceProvider)
     {
@@ -46,8 +50,6 @@ public class RabbitMqConsumer
             
             // Ahora se debe Subscribir el evento a la instancia usando rabbit
             var _channel = rabbitMqConnection.Channel();
-            _channel.QueueDeclare(subscriber.QueueName(),false,true,true,new Dictionary<string,object>());
-            _channel.QueueBind(subscriber.QueueName(), "domain_events", subscription.EventName(),new Dictionary<string, object>());
 
             var consumer = new EventingBasicConsumer(_channel);
             consumer.Received += async (model, ea) =>
@@ -57,8 +59,15 @@ public class RabbitMqConsumer
                 // en este punto se debe ejecutar el metodo handle de la instancia
                 var domainEvent = Deserialize(message,subscription.evento);
 
-                await ((DomainEventSubscriberBase) instanciaSubscriber).Handle(domainEvent);
-                
+                try
+                {
+                    await ((DomainEventSubscriberBase) instanciaSubscriber).Handle(domainEvent);
+                }
+                catch (Exception)
+                {
+                    HandleErrorConsume(ea, subscriber);
+                }
+
                 _channel.BasicAck(ea.DeliveryTag, false);
             };
 
@@ -74,6 +83,46 @@ public class RabbitMqConsumer
         }
     }
 
+    private void HandleErrorConsume(BasicDeliverEventArgs ea, TDomainEventSubscriber subscriber){
+        
+        var redelivereCount = (int)(ea.BasicProperties.Headers["redelivery_count"] ?? 0);
+        if(redelivereCount < MaxRetries){ 
+            var _channel = rabbitMqConnection.Channel();
+
+            var body = ea.Body;
+            var properties = ea.BasicProperties;
+            var headers = ea.BasicProperties.Headers;
+            headers["redelivery_count"] = redelivereCount + 1;
+            properties.Headers = headers;
+
+            _channel.BasicPublish(
+                "dead_letter_domain_events",
+                subscriber.QueueEventName("retry"),
+                properties,
+                body
+            );
+            
+            return;
+        }
+        else {
+
+            var _channel = rabbitMqConnection.Channel();
+
+            var body = ea.Body;
+            var properties = ea.BasicProperties;
+            var headers = ea.BasicProperties.Headers;
+            properties.Headers = headers;
+
+            _channel.BasicPublish(
+                "retry_domain_events",
+                subscriber.QueueEventName("dead_letter"),
+                properties,
+                body
+            );
+        }
+    }
+
+
     private object ObtenerInstanciaDomainEventSubscriber(TDomainEventSubscriber domainEventSubscriber){
         // Obtenemos la instancia del subscriber
         var subscriber = domainEventSubscriber.subscriber;
@@ -86,20 +135,20 @@ public class RabbitMqConsumer
 
 
     public DomainEvent Deserialize(string body, Type typeDomainEvent)
-        {
-            var eventData = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, object>>>(body);
+    {
+        var eventData = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, object>>>(body);
 
-            var data = eventData!["data"];
-            var attributes = JsonConvert.DeserializeObject<Dictionary<string, string>>(data["attributes"].ToString()!)!;
+        var data = eventData!["data"];
+        var attributes = JsonConvert.DeserializeObject<Dictionary<string, string>>(data["attributes"].ToString()!)!;
 
-            var simpleInstance = (DomainEvent) Activator.CreateInstance(typeDomainEvent)!;
-            var domainEvent = simpleInstance.FromPrimitives(
-                attributes["id"] ?? "",
-                attributes,
-                data["id"].ToString() ?? "",
-                data["occurred_on"].ToString() ?? ""
-            );
-            return domainEvent;
-        }
+        var simpleInstance = (DomainEvent) Activator.CreateInstance(typeDomainEvent)!;
+        var domainEvent = simpleInstance.FromPrimitives(
+            attributes["id"] ?? "",
+            attributes,
+            data["id"].ToString() ?? "",
+            data["occurred_on"].ToString() ?? ""
+        );
+        return domainEvent;
+    }
 
 }

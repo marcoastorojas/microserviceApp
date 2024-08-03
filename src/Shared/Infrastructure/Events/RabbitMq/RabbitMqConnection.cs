@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 
-namespace Shared.Infrastrucure.Events.RabbitMq;
+namespace Shared.Infrastructure.Events.RabbitMq;
 
 
 public class RabbitMqConnection
@@ -18,6 +18,7 @@ public class RabbitMqConnection
             HostName = configParams.HostName,
             UserName = configParams.Username,
             Password = configParams.Password,
+            VirtualHost = "/",
             Port = configParams.Port
         };
         
